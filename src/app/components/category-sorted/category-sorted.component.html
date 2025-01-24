@@ -1,0 +1,52 @@
+<div class="category-sorted-container">
+    <h2>Liste des Catégories Triées</h2>
+  
+    <!-- Options de tri -->
+    <div class="sorting-controls">
+      <label for="sortBy">Trier par :</label>
+      <select id="sortBy" [(ngModel)]="sortBy" (change)="loadSortedCategories()">
+        <option value="name">Nom</option>
+        <option value="creationDate">Date de création</option>
+      </select>
+
+      <!-- Sélection de la taille de page -->
+      <label for="pageSize">Éléments par page :</label>
+      <select id="pageSize" [(ngModel)]="size" (change)="updatePageSize(size)">
+        <option *ngFor="let option of [5, 10, 20, 50]" [value]="option">
+          {{ option }}
+        </option>
+      </select>
+    
+      <button class="btn-toggle-sort" (click)="toggleSortDirection()">
+        {{ direction === 'asc' ? 'Ordre Ascendant' : 'Ordre Descendant' }}
+      </button>
+   </div>
+  
+    <!-- Tableau des catégories triées -->
+    <table class="category-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nom</th>
+          <th>Date de Création</th>
+          <th>Parent</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let category of categories">
+          <td>{{ category.id }}</td>
+          <td>{{ category.name }}</td>
+          <td>{{ category.creationDate | date: 'dd/MM/yyyy' }}</td>
+          <td>{{ category.parent?.name }}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- Pagination -->
+    <div class="pagination-controls">
+      <button (click)="goToPage(page - 1)" [disabled]="page === 0">Précédent</button>
+      <span>Page {{ page + 1 }} sur {{ totalPages }}</span>
+      <button (click)="goToPage(page + 1)" [disabled]="page === totalPages - 1">Suivant</button>
+    </div>
+  </div>
+  

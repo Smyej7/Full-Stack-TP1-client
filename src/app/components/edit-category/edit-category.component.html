@@ -1,0 +1,41 @@
+<div class="edit-category-container">
+  <h2>Modifier la Catégorie</h2>
+
+  <!-- Affichage des messages de succès -->
+  <p *ngIf="successMessage" class="success">{{ successMessage }}</p>
+
+  <!-- Affichage des erreurs générales -->
+  <div *ngIf="apiError" class="error">
+    <p><strong>Erreur :</strong> {{ apiError.message }}</p>
+    <ul *ngIf="apiError.validationErrors">
+      <li *ngFor="let error of (apiError.validationErrors | keyvalue)">
+        {{ error.key }} : {{ error.value }}
+      </li>
+    </ul>
+  </div>
+
+  <!-- Formulaire d'édition -->
+  <form (ngSubmit)="updateCategory()">
+    <label for="name">Nom de la catégorie :</label>
+    <input
+      type="text"
+      id="name"
+      [(ngModel)]="category.name"
+      name="name"
+      required
+    />
+
+    <label for="parent">Catégorie parent (optionnel) :</label>
+    <select [(ngModel)]="category.parent" name="parent">
+      <option [ngValue]="undefined">Aucune</option>
+      <option *ngFor="let parent of categories" [ngValue]="parent">
+        {{ parent.name }}
+      </option>
+    </select>
+
+    <button type="submit" class="btn btn-submit">Mettre à jour</button>
+    <button type="button" class="btn btn-cancel" (click)="router.navigate(['/categories'])">
+      Annuler
+    </button>
+  </form>
+</div>
